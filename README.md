@@ -17,8 +17,8 @@ set -e  # Exit on error
 set -u  # Exit on undefined variables
 
 # Define installation directories
-INSTALL_DIR=/mnt/lustre/users/msovara/SoftwareBuilds/croco_deps
-CROCO_DIR=/mnt/lustre/users/msovara/SoftwareBuilds/croco
+INSTALL_DIR=/mnt/lustre/users/msovara/SoftwareBuilds/CROCO/croco_deps
+CROCO_DIR=/mnt/lustre/users/msovara/SoftwareBuilds/CROCO/croco
 mkdir -p $INSTALL_DIR/src
 mkdir -p $CROCO_DIR
 cd $INSTALL_DIR/src
