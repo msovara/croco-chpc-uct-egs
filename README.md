@@ -1,6 +1,8 @@
 # croco-lengau-uct
 This repository provides scripts, configuration files, and documentation for running CROCO on Lengau using Intel MPI, supporting ocean modelling research at UCT.
 
+# Author: Mthetho Vuyo Sovara
+# Last update: 05 March 2025
 
 The main required dependencies for building CROCO on LENGAU with Intel compilers:
 - zlib 1.3
