@@ -4,7 +4,7 @@ This repository provides scripts, configuration files, and documentation for run
 # Author: Mthetho Vuyo Sovara
 # Last update: 05 March 2025
 
-The main required dependencies for building CROCO on LENGAU with Intel compilers:
+The main required dependencies for building CROCO v2.0.1 on LENGAU with Intel compilers:
 - zlib 1.3
 - curl 7.88.1
 - HDF5 1.14.0 (parallel enabled)
