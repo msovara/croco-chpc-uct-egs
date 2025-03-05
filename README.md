@@ -2,12 +2,12 @@
 This repository provides scripts, configuration files, and documentation for running CROCO on Lengau using Intel MPI, supporting ocean modelling research at UCT.
 
 
-The main dependencies are:
-- MPI (MPICH)
-- zlib
-- HDF5 (parallel enabled)
-- netCDF-C (parallel enabled)
-- netCDF-Fortran
+The main required dependencies for building CROCO on LENGAU with Intel compilers:
+- zlib 1.3
+- curl 7.88.1
+- HDF5 1.14.0 (parallel enabled)
+- netCDF-C 4.9.2 (parallel enabled)
+- netCDF-Fortran 4.6.1
 
 ```bash
 #!/bin/bash
@@ -165,4 +165,14 @@ Next steps:
 
 See $INSTALL_DIR/README.md for more details.
 "
+```
+## To use these dependencies:
+### 1. Source the activation script:
+   ```bash
+   source $INSTALL_DIR/activate_croco_env.sh
+```
+Verify the environment variables are set correctly:
+```bash
+echo $NETCDF
+echo $HDF5_ROOT
 ```
