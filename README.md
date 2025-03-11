@@ -134,7 +134,8 @@ This script handles building and installing all dependencies and CROCO.
 #!/bin/bash
 # CROCO Dependency and CROCO Build Script
 # Author: Mthetho Vuyo Sovara
-# Date: 2025-03-05
+# Date: 2025-03-03
+# Date: 2025-03-11
 # Description: This script builds and installs zlib, curl, HDF5, netCDF-C, netCDF-Fortran,
 #              and CROCO using Intel compilers and MPI.
 
@@ -171,6 +172,7 @@ fi
 (
     set +u  # Temporarily disable checking for unbound variables
     source "${MPI_VARS_PATH}"
+    set -u  # Re-enable checking for unbound variables
 )
 
 # Set environment variables
@@ -212,6 +214,10 @@ clean_old_builds() {
     fi
 }
 
+# Debugging: Print FC and MPIF90
+echo "FC is set to: ${FC}"
+echo "MPIF90 is set to: ${MPIF90}"
+
 # Function to check build success and record to log
 check_build() {
     local component="$1"
@@ -235,6 +241,11 @@ cd "${SRC_DIR}"
 # 2. Build curl
 echo "Building curl..."
 cd "curl-7.88.1"
+
+# Patch easy.c for Intel 18.0.2 compiler compatibility
+echo "Patching easy.c for Intel 18.0.2 compiler compatibility..."
+sed -i 's/static curl_simple_lock s_lock = CURL_SIMPLE_LOCK_INIT;/static atomic_int s_lock = ATOMIC_VAR_INIT(0);/' "${SRC_DIR}/curl-7.88.1/lib/easy.c"
+
 ./configure --prefix="${INSTALL_DIR}" \
     --with-zlib="${INSTALL_DIR}" \
     --with-ssl=/usr \
@@ -295,24 +306,60 @@ cd "${SRC_DIR}"
 
 # 6. Build CROCO
 echo "Building CROCO..."
-cd "${CROCO_DIR}"
-clean_old_builds "build"
-mkdir -p build
-cd build
 
-# Configure CROCO
-echo "Configuring CROCO..."
-cmake .. \
-    -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" \
-    -DNETCDF_DIR="${INSTALL_DIR}" \
-    -DHDF5_DIR="${INSTALL_DIR}" \
-    -DCMAKE_C_COMPILER="${MPICC}" \
-    -DCMAKE_Fortran_COMPILER="${MPIF90}" \
-    -DCMAKE_C_FLAGS="${CFLAGS}" \
-    -DCMAKE_Fortran_FLAGS="${FCFLAGS}"
-make -j$(nproc)
-make install
-check_build "CROCO"
+# Check if the build directory exists
+if [ ! -d "${CROCO_DIR}/install/src/CROCO/OCEAN" ]; then
+    echo "ERROR: CROCO build directory not found: ${CROCO_DIR}/install/src/CROCO/OCEAN"
+    exit 1
+fi
+
+# Enter the build directory
+cd "${CROCO_DIR}/install/src/CROCO/OCEAN" || {
+    echo "ERROR: Failed to enter CROCO build directory"
+    exit 1
+}
+
+# Confirm cleanup
+read -p "Are you sure you want to clean the CROCO build directory? (y/n) " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Cleanup aborted."
+    exit 1
+fi
+
+# Clean previous build
+echo "Cleaning previous CROCO build..."
+rm -f *.o *.f90 *.mod *.a croco
+
+# Modify jobcomp to use Intel compilers
+echo "Modifying jobcomp script..."
+sed -i "s|^FC=.*$|FC=ifort|" jobcomp
+sed -i "s|^CC=.*$|CC=${MPICC}|" jobcomp
+sed -i "s|^FFLAGS=.*$|FFLAGS=\"${FCFLAGS} -I${INSTALL_DIR}/include\"|" jobcomp
+sed -i "s|^LDFLAGS=.*$|LDFLAGS=\"-L${INSTALL_DIR}/lib -lnetcdff -lnetcdf -lhdf5_hl -lhdf5 -lz\"|" jobcomp
+
+# Debugging: Print modified jobcomp
+echo "Modified jobcomp script:"
+cat jobcomp
+
+# Run the compilation script
+echo "Compiling CROCO with jobcomp..."
+./jobcomp > "${LOG_DIR}/croco_build.log" 2>&1 || {
+    echo "ERROR: CROCO compilation failed. See ${LOG_DIR}/croco_build.log for details."
+    exit 1
+}
+
+# Check if compilation was successful
+if [ -f "croco" ]; then
+    echo "CROCO built successfully"
+    # Install to destination
+    mkdir -p "${INSTALL_DIR}/bin"
+    cp croco "${INSTALL_DIR}/bin/"
+    check_build "CROCO"
+else
+    echo "ERROR: CROCO executable not found after compilation"
+    exit 1
+fi
 
 echo "Build completed successfully!"
 ```
