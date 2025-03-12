@@ -1,6 +1,6 @@
 🌊 CROCO-Lengau-UCT 🌊
 
-This repository provides scripts, configuration files, and documentation for running CROCO on Lengau using Intel MPI, supporting ocean modelling research at UCT.
+This repository provides scripts, configuration files, and documentation for running CROCO on Lengau using Intel Compilers and MPI, supporting ocean modelling research at UCT.
 ___
 📅 Last Update: 11 March 2025 \
 👨‍💻 Author: Mthetho Vuyo Sovara \
