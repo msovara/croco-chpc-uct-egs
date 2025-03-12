@@ -1,19 +1,20 @@
-# croco-lengau-uct
+🌊 CROCO-Lengau-UCT 🌊
+
 This repository provides scripts, configuration files, and documentation for running CROCO on Lengau using Intel MPI, supporting ocean modelling research at UCT.
-
-## Last Update: 11 March 2025
-### Author: Mthetho Vuyo Sovara
-## Developer Notes
-
+___
+📅 Last Update: 11 March 2025 \
+👨‍💻 Author: Mthetho Vuyo Sovara \
+📝 Developer Notes 
 
 The main dependencies are:
-- MPI (MPICH)
-- zlib
-- HDF5 (parallel enabled)
-- netCDF-C (parallel enabled)
+
+- MPI (MPICH) 
+- zlib 
+- HDF5 (parallel enabled) 
+- netCDF-C (parallel enabled) 
 - netCDF-Fortran
 
-## Script 1: ```download.sh```
+### 🚀 Script 1: ```download.sh```
 This script handles downloading and extracting all dependencies and CROCO source code.
 ```bash
 #!/bin/bash
@@ -133,7 +134,7 @@ echo "Download and extraction complete. Files are in ${SRC_DIR}."
 ```
 ___
 
-## Script 2: ```build.sh```
+### 🛠️ Script 2: ```build.sh```
 This script handles building and installing all dependencies and CROCO.
 ```bash
 #!/bin/bash
@@ -367,10 +368,112 @@ fi
 
 echo "Build completed successfully!"
 ```
-## User Notes
+___
+## 📋 User Notes
 
-The CROCO model has been installed in the ```/home/apps/chpc/earth``` directory where applications on LENGAU are typically installed. To use CROCO you must first load the CROCO module into your shell environment:
+The CROCO model has been installed in the ```/home/apps/chpc/earth``` directory where applications on LENGAU are typically installed. To use CROCO, you must first load the CROCO module and Matlab (for pre-processing) into your shell environment:
 ```bash
 module avail 2>&1 | grep -i croco
 module load chpc/earth/croco/2.0.1
+module load chpc/math/matlab/R2021a
+```
+___
+## 🖥️ Example PBS Job Script for Running CROCO on Lengau
+
+```bash
+#!/bin/bash
+#PBS -N croco_benguela
+#PBS -l walltime=12:00:00
+#PBS -l select=2:ncpus=24:mpiprocs=24
+#PBS -q normal
+#PBS -P CHPC22XXXXXXX
+#PBS -m abe
+#PBS -M your.email@example.com
+
+# Change to the directory where the job was submitted from
+cd $PBS_O_WORKDIR
+
+# Load the CROCO module
+module load chpc/earth/croco/2.0.1
+
+# Print job information
+echo "Running on host: $(hostname)"
+echo "Running on nodes: $(cat $PBS_NODEFILE | sort | uniq | tr '\n' ' ')"
+echo "Number of MPI processes: $PBS_NP"
+echo "Start time: $(date)"
+
+# Create a directory for output files
+OUTDIR="output_$(date +%Y%m%d_%H%M%S)"
+mkdir -p $OUTDIR
+
+# Copy input files to work directory if needed
+# cp /path/to/input/files/* .
+
+# Run CROCO with MPI
+mpirun -np $PBS_NP croco croco.in > $OUTDIR/croco.log 2>&1
+
+# Post-processing (if needed)
+# python /path/to/post_processing.py
+
+# Copy results to storage location (if needed)
+# cp -r $OUTDIR /mnt/lustre/users/msovara/CROCO_Results/
+
+echo "End time: $(date)"
+echo "Job completed"
+```
+___
+### 🛠️ Job Variations:
+
+#### 1. For a small test run:
+```bash
+#PBS -N croco_test
+#PBS -l walltime=01:00:00
+#PBS -l select=1:ncpus=24:mpiprocs=24
+#PBS -q debug
+```
+
+#### 2. For a large production run:
+```bash
+#PBS -N croco_production
+#PBS -l walltime=48:00:00
+#PBS -l select=8:ncpus=24:mpiprocs=24
+#PBS -q large
+```
+
+#### 3. For a high-resolution run with OpenMP:
+```bash
+#PBS -N croco_highres
+#PBS -l walltime=24:00:00
+#PBS -l select=4:ncpus=24:mpiprocs=12:ompthreads=2
+```
+
+### Additional Options:
+
+#### 1. To restart from a previous run:
+```bash
+# Copy restart files
+cp /path/to/previous/run/restart*.nc .
+
+# Modify croco.in to use restart files
+sed -i 's/NRREC.*=.*0/NRREC = 1/' croco.in
+
+# Run CROCO
+mpirun -np $PBS_NP croco croco.in > $OUTDIR/croco.log 2>&1
+```
+
+#### 2. To run multiple simulations in sequence:
+```bash
+# Run first simulation
+mpirun -np $PBS_NP croco croco_sim1.in > $OUTDIR/croco_sim1.log 2>&1
+
+# Run second simulation
+mpirun -np $PBS_NP croco croco_sim2.in > $OUTDIR/croco_sim2.log 2>&1
+```
+___
+### 🛠️ Load performance tools
+```bash
+module load chpc/perf/vtune
+
+# Run with performance monitoring
+mpirun -np $PBS_NP amplxe-cl -collect hotspots -result-dir=$OUTDIR/vtune_results -- croco croco.in
 ```
