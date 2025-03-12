@@ -441,7 +441,7 @@ ___
 #PBS -q large
 ```
 
-#### 3. For a high-resolution run with OpenMP: (Not applicable here)
+#### 3. For a high-resolution run with OpenMP (Not applicable here): 
 ```bash
 #PBS -N croco_highres
 #PBS -l walltime=24:00:00
