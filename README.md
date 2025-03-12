@@ -387,7 +387,7 @@ ___
 #PBS -l walltime=12:00:00
 #PBS -l select=2:ncpus=24:mpiprocs=24
 #PBS -q normal
-#PBS -P CHPC22XXXXXXX
+#PBS -P ERTHXXXX
 #PBS -m abe
 #PBS -M your.email@example.com
 
