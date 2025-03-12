@@ -1,8 +1,8 @@
 # croco-lengau-uct
 This repository provides scripts, configuration files, and documentation for running CROCO on Lengau using Intel MPI, supporting ocean modelling research at UCT.
 
-# Author: Mthetho Vuyo Sovara
 ## Last Update: 11 March 2025
+### Author: Mthetho Vuyo Sovara
 ## Developer Notes
 
 
@@ -366,4 +366,11 @@ else
 fi
 
 echo "Build completed successfully!"
+```
+## User Notes
+
+The CROCO model has been installed in the ```/home/apps/chpc/earth``` directory where applications on LENGAU are typically installed. To use CROCO you must first load the CROCO module into your shell environment:
+```bash
+module avail 2>&1 | grep -i croco
+module load chpc/earth/croco/2.0.1
 ```
