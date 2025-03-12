@@ -372,7 +372,7 @@ echo "Build completed successfully!"
 ___
 ## 📋 User Notes
 
-The CROCO model has been installed in the ```/home/apps/chpc/earth``` directory where applications on LENGAU are typically installed. To use CROCO, you must first load the CROCO module and Matlab (for pre-processing) into your shell environment:
+The CROCO model has been installed in the ```/home/apps/chpc/earth``` directory where earth system science applications on LENGAU are typically installed. To use CROCO, you must first load the CROCO module and Matlab (for pre-processing) into your shell environment:
 ```bash
 module avail 2>&1 | grep -i croco
 module load chpc/earth/croco/2.0.1
