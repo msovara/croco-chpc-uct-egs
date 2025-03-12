@@ -8,7 +8,7 @@ ___
 
 The main dependencies are:
 
-- MPI (MPICH) 
+- MPI (Intel)
 - zlib 
 - HDF5 (parallel enabled) 
 - netCDF-C (parallel enabled) 
