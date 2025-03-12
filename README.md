@@ -9,7 +9,8 @@ ___
 The main dependencies are:
 
 - MPI (Intel)
-- zlib 
+- zlib
+- curl
 - HDF5 (parallel enabled) 
 - netCDF-C (parallel enabled) 
 - netCDF-Fortran
