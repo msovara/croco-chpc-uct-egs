@@ -6,6 +6,10 @@ ___
 👨‍💻 Author: Mthetho Vuyo Sovara \
 📝 Developer Notes 
 
+## Example usage: 
+Clone the repo and try the example: git clone https://github.com/msovara/croco-chpc-uct-egs.git
+
+
 The main dependencies are:
 
 - MPI (Intel)
