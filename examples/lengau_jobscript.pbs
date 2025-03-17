@@ -1,0 +1,40 @@
+#!/bin/bash
+
+#PBS -N croco_benguela
+#PBS -l walltime=12:00:00
+#PBS -l select=2:ncpus=24:mpiprocs=24
+#PBS -q normal
+#PBS -P ERTHXXXX
+#PBS -m abe
+#PBS -M your.email@example.com
+
+# Change to the directory where the job was submitted from
+cd $PBS_O_WORKDIR
+
+# Load the CROCO module
+module load chpc/earth/croco/2.0.1
+
+# Print job information
+echo "Running on host: $(hostname)"
+echo "Running on nodes: $(cat $PBS_NODEFILE | sort | uniq | tr '\n' ' ')"
+echo "Number of MPI processes: $PBS_NP"
+echo "Start time: $(date)"
+
+# Create a directory for output files
+OUTDIR="output_$(date +%Y%m%d_%H%M%S)"
+mkdir -p $OUTDIR
+
+# Copy input files to work directory if needed
+# cp /path/to/input/files/* .
+
+# Run CROCO with MPI
+mpirun -np $PBS_NP croco croco.in > $OUTDIR/croco.log 2>&1
+
+# Post-processing (if needed)
+# python /path/to/post_processing.py
+
+# Copy results to storage location (if needed)
+# cp -r $OUTDIR /mnt/lustre/users/msovara/CROCO_Results/
+
+echo "End time: $(date)"
+echo "Job completed"
