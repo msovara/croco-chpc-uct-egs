@@ -1,4 +1,4 @@
-🌊 CROCO-Lengau-UCT 🌊
+## 🌊 CROCO-Lengau-UCT 🌊
 
 This repository provides scripts, configuration files, and documentation for running CROCO on Lengau using Intel Compilers and MPI, supporting ocean modelling research at UCT.
 ___
@@ -7,9 +7,14 @@ ___
 📝 Developer Notes 
 
 ## Example usage: 
-Clone the repo and try the example: git clone https://github.com/msovara/croco-chpc-uct-egs.git
+Clone the repo and try the example:
 
-
+```bash
+git clone https://github.com/msovara/croco-chpc-uct-egs.git
+cd msovara/examples
+./download.sh
+```
+____
 The main dependencies are:
 
 - MPI (Intel)
@@ -28,8 +33,9 @@ This script handles building and installing all dependencies and CROCO.
 ### 🖥️ Script 3: ```lengau_jobscript``` 
 Example PBS Job Script for Running CROCO on Lengau
 
+____
 ## 📋 User Notes
-
+ 
 The CROCO model has been installed in the ```/home/apps/chpc/earth``` directory where earth system science applications on LENGAU are typically installed. To use CROCO, you must first load the CROCO module and Matlab (for pre-processing) into your shell environment:
 ```bash
 module avail 2>&1 | grep -i croco
