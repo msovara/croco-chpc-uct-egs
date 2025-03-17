@@ -21,6 +21,9 @@ This script handles downloading and extracting all dependencies and CROCO source
 ### 🛠️ Script 2: ```build.sh```
 This script handles building and installing all dependencies and CROCO.
 
+### 🖥️ Script 3: ```lengau_jobscript``` 
+Example PBS Job Script for Running CROCO on Lengau
+
 ## 📋 User Notes
 
 The CROCO model has been installed in the ```/home/apps/chpc/earth``` directory where earth system science applications on LENGAU are typically installed. To use CROCO, you must first load the CROCO module and Matlab (for pre-processing) into your shell environment:
@@ -29,9 +32,6 @@ module avail 2>&1 | grep -i croco
 module load chpc/earth/croco/2.0.1
 module load chpc/math/matlab/R2021a
 ```
-___
-## 🖥️ Example PBS Job Script for Running CROCO on Lengau
-
 ### 🛠️ Job Variations:
 
 #### 1. For a small test run:
