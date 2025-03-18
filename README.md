@@ -30,9 +30,6 @@ This script handles downloading and extracting all dependencies and CROCO source
 ### 🛠️ Script 2: ```build.sh```
 This script handles building and installing all dependencies and CROCO.
 
-### 🖥️ Script 3: ```lengau_jobscript``` 
-Example PBS Job Script for Running CROCO on Lengau
-
 ____
 ## 📋 User Notes
  
@@ -42,6 +39,9 @@ module avail 2>&1 | grep -i croco
 module load chpc/earth/croco/2.0.1
 module load chpc/math/matlab/R2021a
 ```
+
+### 🖥️ Script 3: ```lengau_jobscript``` 
+Example PBS Job Script for Running CROCO on Lengau
 ### 🛠️ Job Variations:
 
 #### 1. For a small test run:
