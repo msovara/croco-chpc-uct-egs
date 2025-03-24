@@ -91,7 +91,7 @@ mpirun -np $PBS_NP croco croco_sim1.in > $OUTDIR/croco_sim1.log 2>&1
 mpirun -np $PBS_NP croco croco_sim2.in > $OUTDIR/croco_sim2.log 2>&1
 ```
 ___
-### 🛠️ Load performance tools
+### 📋 Load performance tools
 ```bash
 module load chpc/perf/vtune
 
