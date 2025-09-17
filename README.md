@@ -38,7 +38,8 @@ The CROCO model has been installed in the ```/home/apps/chpc/earth``` directory 
 ```bash
 module avail 2>&1 | grep -i croco
 module load chpc/earth/croco/2.0.1
-module load chpc/math/matlab/R2021a
+module avail 2>&1 | grep -i matlab
+module load chpc/math/matlab/R2020a
 ```
 
 ### 🖥️ Script 3: ```lengau_jobscript``` 
